@@ -1,0 +1,91 @@
+xY = x letter, Y number
+xZ = x letter, Z number
+------------------------------------------------------------------------
+# wifi-menu interface = Wireless
+# ping -c 3 www.google.co.ve
+# timedatectl set-ntp true = Update the system clock 
+# lsblk = Identify the devices 
+# Cfdisk /dev/sdx or # fdisk disk-device (disk-device may be e.g. /dev/sda) = Partitioning tools
+# mkfs.ext4 /dev/sdxY = File systems (format)
+# mkfs.ext4 /dev/sdxY = File systems (format)
+# mkswap /dev/sdxY = Swap (format)
+# swapon /dev/sdxY = Swap (activate)
+# mount /dev/sdxY /mnt = Mount root partition
+# mkdir -p /mnt/home = Create /home folder
+# mount /dev/sdxZ /mnt/home = Mount /home folder
+# nano /etc/pacman.d/mirrorlist = Mirrorlist (you can skip this step)
+# pacstrap -i /mnt base base-devel = Install base packages
+# genfstab -U /mnt > /mnt/etc/fstab = Identify file systems
+# cat /mnt/etc/fstab = View the generated fstab file
+# arch-chroot /mnt /bin/bash = Change root (bash shell) or # arch-chroot /mnt/arch (sh) (preferably the first option)
+-----------------------------------------------------------------------
+# nano /etc/locale.gen = Locale
+en_US.UTF-8 UTF-8 = Uncomment this and save the file
+# locale-gen = Generate the new locales
+# nano /etc/locale.conf = Create and write this: LANG=en_US.UTF-8
+or yo can do this: # echo LANG=en_US.UTF-8 > /etc/locale.conf and then 
+# export LANG=en_US.UTF-8
+-------------------------------------------------------------------------
+# tzselect = Select a time zone
+# ln -sf /usr/share/zoneinfo/Zone/SubZone /etc/localtime = Create the symbolic link /etc/localtime, where Zone/Subzone is the TZ value from tzselect
+# hwclock --systohc --utc = Adjust the time skew and set the time standard to UTC
+# mkinitcpio -p linux = For special configurations, set the correct hooks in /etc/mkinitcpio.conf and re-generate the initramfs image
+# pacman -S grub os-prober = Install the grub package. To search for other operating systems, also install os-prober
+# grub-install --recheck /dev/sda = Install the bootloader to the drive Arch was installed to
+# grub-mkconfig -o /boot/grub/grub.cfg = Generate grub.cfg
+# nano /etc/hostname and write the hostname or echo myhostname > /etc/hostname = set the Hostname
+# nano /etc/hosts = It is recommended to append the same hostname to localhost entries in /etc/hosts.
+# systemctl enable dhcpcd@interface.service = Wired
+# pacman -S iw wpa_supplicant dialog = Wireless packages
+# passwd = set the root password
+# exit or Ctrl+D
+# umount -R /mnt
+# reboot
+Remove the installation media, or you may boot back into it. You can log into your new installation as root, using the password you specified with passwd.
+--------------------------------------------------------------------
+# useradd -m -G wheel -s /bin/bash archie = Set the user
+# passwd username = Set the user's password
+# nano /etc/sudoers
+dany ALL=(ALL) ALL = Write this (above the root)
+%wheel ALL=(ALL) ALL = Uncomment this
+# nano /etc/pacman.conf
+[multilib] = Uncomment
+Include = /etc/pacman.d/mirrorlist = Uncomment
+Add this:
+[archlinuxfr]
+SigLevel = Never 
+Server = http://repo.archlinux.fr/$arch
+------------------------------------------
+systemctl restart dhcpcd.service
+# pacman -Sy
+# pacman -S sudo
+# pacman -S bash-completion
+------------------------------------------------------------------------
+Install KDE Plasma:
+
+pacman -S xorg xorg-xinit
+pacman -S kf5 kf5-aids
+pacman -S plasma kdebase kdegraphics-ksnapshot gwenview
+pacman -R plasma-mediacenter
+pacman -S ttf-freefont
+pacman -S sddm sddm-kcm
+systemctl enable sddm
+nano /etc/sddm.conf
+[Theme] 
+# Current theme name 
+Current=breeze 
+ 
+# Cursor theme 
+CursorTheme=breeze_cursors
+pacman -S gtk-engines gtk2 gtk3 gnome-themes-standard gnome-icon-theme
+pacman -S ntp
+systemctl enable ntpd
+pacman -S alsa-utils pulseaudio pulseaudio-alsa libcanberra-pulse libcanberra-gstreamer jack2-dbus kmix
+pacman -S sudo
+sudo pacman -S ntfs-3g
+
+-----------------------------
+pacman -Ss sudo
+sudo pacman -S ttf-dejavu
+cantarell font
+# pacman -S breeze-kde4
